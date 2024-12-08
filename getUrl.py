@@ -5,16 +5,8 @@ def getUrlFromUser(fileName):
         if not urlGet:
             continue
         else:
+            waitTime = getTimer()
             break
-
-    while(True):
-        try:
-            waitTime = int(input("Plese enter sleep time : "))
-            if not waitTime:
-                continue
-            break
-        except ValueError:
-            continue
 
 #============================================
     
@@ -33,4 +25,14 @@ def getUrlFromUser(fileName):
     except FileNotFoundError:
         print("file not found")
         f.close()
+
+def getTimer():
+    while(True):
+        try:
+            waitTime = int(input("Plese enter sleep time : "))
+            if not waitTime:
+                continue
+            return waitTime
+        except ValueError:
+            continue
     

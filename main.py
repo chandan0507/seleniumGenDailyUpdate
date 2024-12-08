@@ -10,4 +10,11 @@ while True:
         continue 
     print(f"Given fileName is {fileNamepy}")
     getUrlFromUser(fileNamepy)
-    getSingleElement(fileNamepy)
+    break
+
+count = 0
+while True:
+    incrementCounterOnEachCall = "element"
+    incrementCounterOnEachCall = incrementCounterOnEachCall+str(count)
+    getSingleElement(fileNamepy, incrementCounterOnEachCall)
+    count+=1
