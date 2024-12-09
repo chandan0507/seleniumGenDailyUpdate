@@ -67,14 +67,19 @@ def writeElementOperation(fileName, incrementCounterOnEachCall, userInputElement
     f = open(fileName, 'a')
     # getTimer function is called here, because to give manual sleep on each operation
     waitTime = getTimer()
+    incrementCounterOnEachCallError = incrementCounterOnEachCall+"Error"
     try:
-        f.write(f"{incrementCounterOnEachCall} = driver.find_element(By.{userInputElement}, '{userInputElementValue}')\n")
+        f.write(f"try:\n")
+        f.write(f"\t{incrementCounterOnEachCall} = driver.find_element(By.{userInputElement}, '{userInputElementValue}')\n")
         if userInputOperation == 'click':
-            f.write(f"{incrementCounterOnEachCall}.{userInputOperation}()\n")
+            f.write(f"\t{incrementCounterOnEachCall}.{userInputOperation}()\n")
         else:
-            f.write(f"{incrementCounterOnEachCall}.{availOperationDict[userInputOperation]}('{userInputOperationValue}')\n")
-        f.write(f"time.sleep({waitTime})\n")
-        # f.write("driver.quit()\n")
+            f.write(f"\t{incrementCounterOnEachCall}.{availOperationDict[userInputOperation]}('{userInputOperationValue}')\n")
+        f.write(f"except Exception as {incrementCounterOnEachCallError}:\n")
+        f.write(f"\tprint('Received an exception : ', {incrementCounterOnEachCallError})\n")
+        f.write(f"\tdriver.quit()\n")
+        f.write(f"\tquit()\n")
+        f.write(f"time.sleep({waitTime})\n\n")
     except FileNotFoundError:
         print("file not found")
 
