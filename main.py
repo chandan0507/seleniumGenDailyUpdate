@@ -4,7 +4,7 @@ from matchChecker import matchCheck
 from userInputWriter import availOperationDict, availSingleElementsDict
 
 while True:
-    fileName = input("Please enter the filename : ")
+    fileName = input("Please enter the filename length should be between 5 to 50: ")
     fileName.strip()
     fileNamepy = fileName+".py"
     # instead of none, not is used to check empty or not
