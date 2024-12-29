@@ -1,16 +1,17 @@
-from flask import Flask, json, jsonify, request
+from flask import jsonify, request
+from userInputReceiver import checkDictValidator, checkValueValidator
+from urlAndTimer import getUrlFromUser
+from matchChecker import matchCheck
+from userInputWriter import availOperationDict, availSingleElementsDict
 
-app = Flask(__name__)
-
-@app.route('/postUserInput', methods=['POST'])
 def postUserInput():
     if request.method == 'POST':
         jsonData = request.get_json()
         # Below checks if jsonData['txnId'] has any value or not, if no value then retuns 402 response
         if not jsonData['txnId']:
             return jsonify({'errorMessage' : 'tnxId is null'}), 402
-        if not jsonData['fileName']:
-            return jsonify({'errorMessage' : 'fileName is null'}), 402
+        if not(5<= len(jsonData['fileName']) <=20):
+            return jsonify({'errorMessage' : 'fileName length should be between 5 & 20'}), 405
         if not jsonData['webUrl']:
             return jsonify({'errorMessage' : 'webUrl is null'}), 402
         for action in jsonData['actions']:
@@ -24,16 +25,17 @@ def postUserInput():
                 return jsonify({'errorMessage' : 'description is null'}), 402
             if not action['optionValue']:
                 pass
-            print(action['selectorKey'])
-            print(action['selectorValue'])
-            print(action['optionKey'])
-            print(action['optionValue'])
-            print(action['description'])
+        if jsonData:
+            print(dict(jsonData))
         return jsonify({'errorMessage' : 'Success'}), 201
-        
-if __name__ == '__main__':
-    app.run(debug=True, port=8080)
 
+
+def provideResponse(fileName, webUrl, actions):
+    fileName = fileName.strip()
+    fileNamepy = fileName+".py"
+    print(f"Given fileName is {fileNamepy}")
+    getUrlFromUser(fileNamepy)
+    
 # Below is the body for api, request. action is an array so multiple dictionary could be included
 
 # {
