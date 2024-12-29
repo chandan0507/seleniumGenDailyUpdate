@@ -33,3 +33,33 @@ def postUserInput():
         
 if __name__ == '__main__':
     app.run(debug=True, port=8080)
+
+# Below is the body for api, request. action is an array so multiple dictionary could be included
+
+# {
+#     "txnId" : "9721628",
+#     "fileName" : "chan",
+#     "webUrl" : "https://",
+#     "actions" : [
+#         {
+#             "selectorKey" : "Id",
+#             "selectorValue" : "someButton",
+#             "optionKey" : "something",
+#             "optionValue" : "thisVal",
+#             "description" : "click on button"
+#         },
+#         {
+#             "selectorKey" : "name",
+#             "selectorValue" : "event",
+#             "optionKey" : "something",
+#             "description" : "click on button"
+#         },
+#         {
+#             "selectorKey" : "link",
+#             "selectorValue" : "aref",
+#             "optionKey" : "something",
+#             "optionValue" : "thisVal",
+#             "description" : "click on button"
+#         }
+#     ]
+# }
