@@ -1,8 +1,12 @@
 from flask import jsonify, request
+from writeFileProd import writeProdUrl, checkDictWriter, checkValueWriter
 from userInputReceiver import checkDictValidator, checkValueValidator
 from urlAndTimer import getUrlFromUser
 from matchChecker import matchCheck
-from userInputWriter import availOperationDict, availSingleElementsDict
+from userInputWriter import availOperationDict
+
+availSingleElementsDict = {'id': 'ID', 'name': 'NAME', 'xpath': 'XPATH', 'linktext': 'LINK_TEXT', 'tagname': 'TAG_NAME', 'classname': 'CLASS_NAME', 'cssselector': 'CSS_SELECTOR', 'q': 'quit()'}
+availOperationDict = {'click': 'click', 'input': 'send_keys'}
 
 def postUserInput():
     if request.method == 'POST':
@@ -17,28 +21,32 @@ def postUserInput():
         if not jsonData['productName']:
             return jsonify({'errorMessage' : 'productName is null'}), 402
         for action in jsonData['actions']:
-            if not action['selectorKey']:
+            if action['selectorKey'].lower().strip() not in availSingleElementsDict.keys():
                 return jsonify({'errorMessage' : 'selectorKey is null'}), 402
             if not action['selectorValue']:
                 return jsonify({'errorMessage' : 'selectorValue is null'}), 402
             if not action['waitTime']:
                 return jsonify({'errorMessage' : 'waitTime is null'}), 402
-            if not action['optionKey']:
+            if action['optionKey'].lower().strip() not in availOperationDict.keys():
                 return jsonify({'errorMessage' : 'optionKey is null'}), 402
             if not action['description']:
                 return jsonify({'errorMessage' : 'description is null'}), 402
             if not action['optionValue']:
                 pass
         if jsonData:
+            provideResponse(jsonData['fileName'], jsonData['productName'], jsonData['webUrl'], action)
             print(dict(jsonData))
         return jsonify({'errorMessage' : 'Success'}), 201
 
 
-def provideResponse(fileName, webUrl, actions):
+def provideResponse(fileName, productName, webUrl, actions):
     fileName = fileName.strip()
     fileNamepy = fileName+".py"
     print(f"Given fileName is {fileNamepy}")
-    getUrlFromUser(fileNamepy)
+    writeProdUrl(fileNamepy, productName, webUrl)
+    selectorKeySender = actions['selectorKey']
+    selectorValSender = actions['selectorValue']
+    optionKeySender = checkDictWriter(fileNamepy, actions['selectorKey'], availSingleElementsDict)
     
 # Below is the body for api, request. action is an array so multiple dictionary could be included
 
