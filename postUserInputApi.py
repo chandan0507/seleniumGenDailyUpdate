@@ -14,11 +14,15 @@ def postUserInput():
             return jsonify({'errorMessage' : 'fileName length should be between 5 & 20'}), 405
         if not jsonData['webUrl']:
             return jsonify({'errorMessage' : 'webUrl is null'}), 402
+        if not jsonData['productName']:
+            return jsonify({'errorMessage' : 'productName is null'}), 402
         for action in jsonData['actions']:
             if not action['selectorKey']:
                 return jsonify({'errorMessage' : 'selectorKey is null'}), 402
             if not action['selectorValue']:
-                return jsonify({'errorMessage' : 'selectorKey is null'}), 402
+                return jsonify({'errorMessage' : 'selectorValue is null'}), 402
+            if not action['waitTime']:
+                return jsonify({'errorMessage' : 'waitTime is null'}), 402
             if not action['optionKey']:
                 return jsonify({'errorMessage' : 'optionKey is null'}), 402
             if not action['description']:
@@ -40,20 +44,24 @@ def provideResponse(fileName, webUrl, actions):
 
 # {
 #     "txnId" : "9721628",
-#     "fileName" : "chan",
+#     "fileName" : "chand",
 #     "webUrl" : "https://",
+#     "productName" : "vocus",
 #     "actions" : [
 #         {
 #             "selectorKey" : "Id",
 #             "selectorValue" : "someButton",
 #             "optionKey" : "something",
 #             "optionValue" : "thisVal",
+#             "waitTime" : 10,
 #             "description" : "click on button"
 #         },
 #         {
 #             "selectorKey" : "name",
 #             "selectorValue" : "event",
 #             "optionKey" : "something",
+#             "optionValue" : null,
+#             "waitTime" : 10,
 #             "description" : "click on button"
 #         },
 #         {
@@ -61,6 +69,7 @@ def provideResponse(fileName, webUrl, actions):
 #             "selectorValue" : "aref",
 #             "optionKey" : "something",
 #             "optionValue" : "thisVal",
+#             "waitTime" : 10,
 #             "description" : "click on button"
 #         }
 #     ]
