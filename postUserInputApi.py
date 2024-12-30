@@ -1,12 +1,5 @@
 from flask import jsonify, request
-from writeFileProd import writeProdUrl, checkDictWriter, checkValueWriter
-from userInputReceiver import checkDictValidator, checkValueValidator
-from urlAndTimer import getUrlFromUser
-from matchChecker import matchCheck
-from userInputWriter import availOperationDict
-
-availSingleElementsDict = {'id': 'ID', 'name': 'NAME', 'xpath': 'XPATH', 'linktext': 'LINK_TEXT', 'tagname': 'TAG_NAME', 'classname': 'CLASS_NAME', 'cssselector': 'CSS_SELECTOR', 'q': 'quit()'}
-availOperationDict = {'click': 'click', 'input': 'send_keys'}
+from writeFileProd import availSingleElementsDict, availOperationDict, writeProdUrl, matchChecker
 
 def postUserInput():
     if request.method == 'POST':
@@ -34,19 +27,29 @@ def postUserInput():
             if not action['optionValue']:
                 pass
         if jsonData:
-            provideResponse(jsonData['fileName'], jsonData['productName'], jsonData['webUrl'], action)
+            provideResponse(jsonData['fileName'], jsonData['productName'], jsonData['webUrl'], jsonData['actions'])
             print(dict(jsonData))
         return jsonify({'errorMessage' : 'Success'}), 201
 
-
-def provideResponse(fileName, productName, webUrl, actions):
+def provideResponse(fileName, productName, webUrl, jsonData):
     fileName = fileName.strip()
     fileNamepy = fileName+".py"
     print(f"Given fileName is {fileNamepy}")
+    # Below will create the file with url, product name
     writeProdUrl(fileNamepy, productName, webUrl)
-    selectorKeySender = actions['selectorKey']
-    selectorValSender = actions['selectorValue']
-    optionKeySender = checkDictWriter(fileNamepy, actions['selectorKey'], availSingleElementsDict)
+    count = 0
+    for action in jsonData:
+        incrementCounterOnEachCall = "element"
+        incrementCounterOnEachCall = incrementCounterOnEachCall+str(count)
+        selectorKeySender = action['selectorKey'].lower()
+        selectorValSender = action['selectorValue']
+        optionKeySender = action['optionKey'].lower()
+        if action['optionValue']:
+            optionValSender = action['optionValue']
+        descriptionSender = action['description']
+        waitTimeSender = action['waitTime']
+        matchChecker(fileNamepy, incrementCounterOnEachCall, descriptionSender, selectorKeySender, selectorValSender, optionKeySender, optionValSender, waitTimeSender)
+        count+=1
     
 # Below is the body for api, request. action is an array so multiple dictionary could be included
 

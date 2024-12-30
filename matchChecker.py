@@ -3,13 +3,11 @@ from userInputWriter import writeElementOperation, availSingleElementsDict
 def matchCheck(fileName, incrementCounterOnEachCall, userInputDescription, userInputElement, userInputElementValue, userInputOperation, userInputOperationValue):
     match userInputElement:
         case 'id':
-            writeElementOperation(fileName, incrementCounterOnEachCall, userInputDescription,availSingleElementsDict['id'], userInputElementValue, userInputOperation, userInputOperationValue)
+            writeElementOperation(fileName, incrementCounterOnEachCall, userInputDescription, availSingleElementsDict['id'], userInputElementValue, userInputOperation, userInputOperationValue)
         case 'name':
             writeElementOperation(fileName, incrementCounterOnEachCall, userInputDescription, availSingleElementsDict['name'], userInputElementValue, userInputOperation, userInputOperationValue)
         case 'xpath':
             writeElementOperation(fileName, incrementCounterOnEachCall, userInputDescription, availSingleElementsDict['xpath'], userInputElementValue, userInputOperation, userInputOperationValue)
-        case 'linktext':
-            writeElementOperation(fileName, incrementCounterOnEachCall, userInputDescription, availSingleElementsDict['linktext'], userInputElementValue, userInputOperation, userInputOperationValue)
         case 'linktext':
             writeElementOperation(fileName, incrementCounterOnEachCall, userInputDescription, availSingleElementsDict['linktext'], userInputElementValue, userInputOperation, userInputOperationValue)
         case 'tagname':
